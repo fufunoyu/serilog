@@ -8,13 +8,6 @@ test: off
 build_script:
   - ps: ./Build.ps1
   - ps: ./BuildNativeUWP.ps1
-for:
--
-  matrix:
-    only:
-      - image: Ubuntu
-  build_script:
-  - sh build.sh
   # Download the latest version of WhiteSource FS Agent
   - curl -LJO https://github.com/whitesource/fs-agent-distribution/raw/master/standAlone/whitesource-fs-agent.jar
   # Download the default configuration file
@@ -26,6 +19,11 @@ for:
   # Run WhiteSource FS Agent
   - java -jar whitesource-fs-agent.jar -apiKey 41c71f81b00e4ec5868fece050113260fa23031c6fac460a81945a99bfaeea51 -product mytest -c whitesource-fs-agent.config -d . -project serilog
 
+for:
+-
+  matrix:
+    only:
+      - image: Ubuntu
 on_success:
 - curl -s -o upload https://copilot.blackducksoftware.com/ci/appveyor/scripts/upload
 - bash upload
